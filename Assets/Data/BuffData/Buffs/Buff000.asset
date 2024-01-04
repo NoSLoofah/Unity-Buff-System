@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b0b9b580ee8d0a4ca0288b253f5ef27, type: 3}
+  m_Name: Buff000
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 8dc2567d029833247b19e732052abd1a, type: 3}
+  buffName: "\u6D41\u8840\u2160"
+  mutilAddType: 0
+  removeOneLayerOnTimeUp: 0
+  buffTag: 1
+  id: 0
+  isPermanent: 0
+  duration: 15
+  bleedDamage: 2
+  bleedTimeInterval: 1

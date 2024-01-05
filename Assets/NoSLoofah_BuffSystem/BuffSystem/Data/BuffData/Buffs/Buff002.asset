@@ -18,5 +18,6 @@ MonoBehaviour:
   removeOneLayerOnTimeUp: 1
   buffTag: 2
   id: 2
+  isPermanent: 0
   duration: 5
   hurtIncreaseRate: 0.5

@@ -10,14 +10,21 @@
 - 邮箱：nosloofah@qq.com
 - bilibili：NoSLoofah
 ![](./doc/LOGO.png)
+
+## 注意
+1. NoSLoofah_BuffSystem/BuffSystem文件夹可以移动，但不要改变该文件夹内部的文件位置
+2. 请保证项目中始终只有一个BuffMgr.prefab
+3. 如果要重置所有数据，可以直接删除Assets/NoSLoofah_BuffSystem/BuffSystem/Data/BuffData文件夹。下次打开BuffEditor时该文件夹会重新生成
+
 ## 快速上手
 ### 安装
-将Asset/BuffSystem文件夹拷贝到项目的同路径下
+将Assets/NoSLoofah_BuffSystem/BuffSystem文件夹拷贝到你的项目
+
 或导入Release中的unitypackage
 ### 打开编辑器和初始化
 在Unity编辑器的工具栏打开Tools/BuffEditor
 ![](./doc/tutorial01.png)
-点击后打开Buff编辑器窗口，同时生成文件夹Data/BuffData。BuffData文件夹保存了你配置的Buff数据，请不要修改其中资产的文件名，也不要改动他们的路径。
+点击后打开Buff编辑器窗口，同时生成文件夹BuffSystem/Data/BuffData。BuffData文件夹保存了你配置的Buff数据，请不要修改其中资产的文件名，也不要改动他们的路径。
 ![](./doc/tutorial02.png)
 ### 编写自定义Buff
 创建任意名称的新Buff脚本，引用命名空间NoSLoofah.BuffSystem，让该类继承Buff。实现抽象类后的格式如下：
@@ -48,6 +55,8 @@ Buff的生命周期如下：
     4. Buff持续时间结束时，执行**OnBuffRemove**
     5. 下一帧执行**OnBuffDestroy**，完成Buff的移除
 
+> 注意：Buff执行的第一个Update会通过OnBuffModifyLayer将自己的层数从0提升为1，而OnBuffDestroy会将层数重置为0并F最后执行一次OnBuffModifyLayer
+
 2. **编写自定义Buff的逻辑时，你可能会用到这些成员：**
 ![](./doc/tutorial11.png)
 3. **开启周期性效果的函数是StartBuffTickEffect(float interval)，停止周期性效果的函数是StopBuffTickEffect()**。如果周期性效果在Buff刚被添加时就开始计时，你可以在**OnBuffStart**里调用它；当然你也可以其他生命周期函数中调用。
@@ -63,7 +72,7 @@ public class Buff_Poison : Buff
     [SerializeField] private float poisonTimeInterval;
     [SerializeField] private GameObject effect;
     private Entity1 targetEntity;
-    public override void OnBuffDestroy(){  }
+    public override void OnBuffDestroy() { base.OnBuffDestroy(); }
 
     public override void OnBuffModifyLayer(int change) { }
 
@@ -75,7 +84,7 @@ public class Buff_Poison : Buff
         StartBuffTickEffect(poisonTimeInterval);
     }
 
-    public override void Reset(){}
+    public override void Reset() { }
 
     protected override void OnBuffTickEffect()
     {
@@ -112,16 +121,16 @@ Entity1可以换成你自己的业务类
 ![](./doc/tutorial07.png)
 
 ### 配置Tag
-**点击Asset/Data/BuffData路径下的BuffTagData.asset**，观察Inspector
+**点击BuffSystem/Data/BuffData路径下的BuffTagData.asset**，观察Inspector
 ![](./doc/tutorial08.png)
 目前Tag的数量是固定的，为**31**个。我们在上一节配置Buff时看到，每个Buff都可以配置**一个Tag**。我们在BuffTagData.asset配置Tag之间的互斥关系
 1. 当一个Buff（下文称之为newBuff）添加到一个对象身上时，它的**OnBuffAwake**会立即执行。
 2. 之后在同一帧，系统监测该实体身上已有Buff的Tag。以上图为例，如果newBuff的Tag为Tag3，而目标身上已经有Tag为Tag2（禁止该Tag添加的Buff）的其他Buff，那么我们会立即执行newBuff的**OnBuffDestroy**，并不将他添加到实体的Buff列表中。
 3. 如果没有其它Buff禁止添加newBuff，接下来会检查是否有可以被newBuff抵消的Buff。以上图为例，如果newBuff的Tag为Tag1，那么目标实体上所有tag为Tag1和Tag2的其他Buff都会被移除（按正常生命周期执行OnBuffRemove和OnBuffInterupt。具体可见“编写自定义Buff”中的生命周期图）
 
-如果你需要修改Tag的名称，请在**Assets/BuffSystem/Base/Tag/BuffTag.cs**修改
+如果你需要修改Tag的名称，请在**BuffSystem/Base/Tag/BuffTag.cs**修改
 ### 让Buff发挥作用
-1. 在游戏场景添加**Assets/BuffSystem/Base**路径下的**BuffMgr**预制体![](./doc/tutorial09.png)
+1. 在游戏场景添加**BuffSystem/Base**路径下的**BuffMgr**预制体![](./doc/tutorial09.png)
 2. 在接受Buff的游戏物体上添加**BuffHandler**组件
 3. 在添加Buff的脚本里调用上一步添加的**BuffHandler**。下面是它的接口
 ```csharp

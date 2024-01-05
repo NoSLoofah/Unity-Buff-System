@@ -18,6 +18,7 @@ MonoBehaviour:
   removeOneLayerOnTimeUp: 0
   buffTag: 1
   id: 1
+  isPermanent: 0
   duration: 15
   bleedDamage: 3
   bleedTimeInterval: 1

@@ -56,6 +56,7 @@ namespace NoSLoofah.BuffSystem
         [SerializeField][HideInInspector] private int id;
         private int tmpLayer = 0;
         private bool layerModified = false;
+        private bool firstFrame;
         public bool RemoveOneLayerOnTimeUp => removeOneLayerOnTimeUp;
         public BuffMutilAddType MutilAddType => mutilAddType;
         public BuffTag BuffTag => buffTag;
@@ -67,11 +68,23 @@ namespace NoSLoofah.BuffSystem
         {
             timer = duration;
             isEffective = true;
-            Layer = 1;
-
+            Layer = 0;
+            ModifyLayer(1);
+            firstFrame = true;
+            Debug.Log(Layer);
         }
-        public abstract void OnBuffDestroy();
         public abstract void OnBuffRemove();
+
+        public virtual void OnBuffDestroy()
+        {
+            if (mutilAddType == BuffMutilAddType.multipleLayer || mutilAddType == BuffMutilAddType.multipleLayerAndResetTime)
+            {
+                ModifyLayer(-Layer);
+                isEffective = false;
+            }
+            RealModifyLayer();
+        }
+
         public abstract void OnBuffStart();
         public abstract void OnBuffModifyLayer(int change);
         public abstract void Reset();
@@ -118,6 +131,11 @@ namespace NoSLoofah.BuffSystem
         }
         public void OnBuffUpdate()
         {
+            if (firstFrame)
+            {
+                firstFrame = false;
+                return;
+            }
             if (!IsEffective) return;
             if (!isPermanent) timer -= Time.deltaTime;
             if (!isPermanent && timer <= 0)
@@ -126,11 +144,6 @@ namespace NoSLoofah.BuffSystem
                 {
                     timer = duration;
                     ModifyLayer(-1);
-                }
-                else if (mutilAddType == BuffMutilAddType.multipleLayer || mutilAddType == BuffMutilAddType.multipleLayerAndResetTime)
-                {
-                    ModifyLayer(-Layer);
-                    isEffective = false;
                 }
             }
             RealModifyLayer();
@@ -159,7 +172,7 @@ namespace NoSLoofah.BuffSystem
         }
         public void ModifyLayer(int i)
         {
-            if (mutilAddType != BuffMutilAddType.multipleLayer && mutilAddType != BuffMutilAddType.multipleLayerAndResetTime)
+            if (Layer + i != 0 && Layer + i != 1 && mutilAddType != BuffMutilAddType.multipleLayer && mutilAddType != BuffMutilAddType.multipleLayerAndResetTime)
                 throw new System.Exception("试图修改非层级Buff的层数");
             tmpLayer += i;
             layerModified = true;

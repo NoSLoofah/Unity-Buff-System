@@ -8,7 +8,7 @@ public class Buff_Poison : Buff
     [SerializeField] private float poisonTimeInterval;
     [SerializeField] private GameObject effect;
     private Entity1 targetEntity;
-    public override void OnBuffDestroy(){  }
+    public override void OnBuffDestroy() { base.OnBuffDestroy(); }
 
     public override void OnBuffModifyLayer(int change) { }
 
@@ -20,7 +20,7 @@ public class Buff_Poison : Buff
         StartBuffTickEffect(poisonTimeInterval);
     }
 
-    public override void Reset(){}
+    public override void Reset() { }
 
     protected override void OnBuffTickEffect()
     {

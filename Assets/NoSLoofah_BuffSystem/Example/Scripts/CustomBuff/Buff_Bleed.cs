@@ -8,7 +8,7 @@ public class Buff_Bleed : Buff
 
     public override void OnBuffDestroy()
     {
-
+        base.OnBuffDestroy();
     }
 
     public override void OnBuffModifyLayer(int change)
@@ -18,7 +18,7 @@ public class Buff_Bleed : Buff
 
     public override void OnBuffRemove()
     {
-
+        
     }
 
     public override void OnBuffStart()

@@ -10,23 +10,23 @@ public class Buff_Fragile : Buff
 
     public override void OnBuffDestroy()
     {
-
+        base.OnBuffDestroy();
     }
 
     public override void OnBuffModifyLayer(int change)
     {
+        Debug.Log(targetEntity);
         targetEntity.ModifyDamageMultiplier(hurtIncreaseRate * change);
     }
 
     public override void OnBuffRemove()
     {
-        targetEntity.ModifyDamageMultiplier(-hurtIncreaseRate);
+        
     }
 
     public override void OnBuffStart()
     {
-        targetEntity = Target.GetComponent<Entity1>();
-        targetEntity.ModifyDamageMultiplier(hurtIncreaseRate);
+        targetEntity = Target.GetComponent<Entity1>();        
     }
 
     public override void Reset()

@@ -1,4 +1,5 @@
 using NoSLoofah.BuffSystem.Dependence;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,18 @@ namespace NoSLoofah.BuffSystem.Manager
     /// </summary>
     public class BuffManager : MonoSingleton<BuffManager>, IBuffManager
     {
-        public static readonly string SO_PATH = "Assets/Data/BuffData";    //保存Data的路径
+        //public static readonly string SO_PATH = "Assets/NoSLoofah_BuffSystem/BuffSystem/Data/BuffData";    //保存Data的路径
+        public static string SO_PATH
+        {
+            get
+            {
+                var l = AssetDatabase.FindAssets("BuffMgr t:Prefab");
+                if (l.Length <= 0) throw new Exception("BuffMgr.prefab丢失,请重新导入BuffSystem");
+                else if (l.Length > 1) Debug.LogError("请保证项目中只有一个BuffMgr.prefab");
+                var path = AssetDatabase.GUIDToAssetPath(l[0]).Replace("Base/BuffMgr.prefab", "Data/BuffData");
+                return path;
+            }
+        }//保存Data的路径
         private BuffCollection collection;
         private IBuffTagManager tagManager;
         public bool IsWorking => collection != null;
@@ -34,7 +46,7 @@ namespace NoSLoofah.BuffSystem.Manager
             {
                 throw new System.Exception("使用非法的Buff id：" + id + " (当前Buff总数为" + collection.Size + ")");
             }
-            if (collection.buffList[id]==null) throw new System.Exception("引用的Buff为null。id："+id);
+            if (collection.buffList[id] == null) throw new System.Exception("引用的Buff为null。id：" + id);
             return collection.buffList[id].Clone();
         }
 

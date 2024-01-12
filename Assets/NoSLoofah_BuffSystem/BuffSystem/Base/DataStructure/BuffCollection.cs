@@ -9,8 +9,8 @@ namespace NoSLoofah.BuffSystem
     [CreateAssetMenu(fileName = "BFcollection", menuName = "BFcollection")]
     public class BuffCollection : ScriptableObject
     {
-        private int size = 20;
-        [HideInInspector]public List<Buff> buffList = new List<Buff>();
+        [SerializeField] private int size = 20;
+        [HideInInspector] public List<Buff> buffList = new List<Buff>();
         public int Size => size;
         /// <summary>
         /// 修改最大Buff数量

@@ -14,8 +14,7 @@ public class Buff_Fragile : Buff
     }
 
     public override void OnBuffModifyLayer(int change)
-    {
-        Debug.Log(targetEntity);
+    {        
         targetEntity.ModifyDamageMultiplier(hurtIncreaseRate * change);
     }
 

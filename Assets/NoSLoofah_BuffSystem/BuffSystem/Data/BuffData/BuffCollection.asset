@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0cf67308801014c82c5363a042523e, type: 3}
   m_Name: BuffCollection
   m_EditorClassIdentifier: 
+  size: 30
   buffList:
   - {fileID: 11400000, guid: 6b22d7359afb5eb4990addc1ea716790, type: 2}
   - {fileID: 11400000, guid: 56aec3fde4592b0438490a3a065979f2, type: 2}
@@ -33,3 +34,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 1cdcffd9e8ed19e42924b0b2daf05d18, type: 2}

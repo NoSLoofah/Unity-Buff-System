@@ -28,7 +28,7 @@ namespace NoSLoofah.BuffSystem
         }
 
         public override bool IsTagCanAddWhenHaveOther(BuffTag tag, BuffTag other)
-        {
+        {            
             if (tag == 0) return false;
             if (tag < 0) throw new System.Exception("使用了负标签");
             int index = BitBuffTagData.GetIndex(tag);

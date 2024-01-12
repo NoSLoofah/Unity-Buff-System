@@ -34,27 +34,6 @@ namespace NoSLoofah.BuffSystem
             bf.Initialize(this, caster);
             bf.OnBuffAwake();
 
-            //Tag处理：
-            //只在有BuffTagManager注册时处理互斥
-            //特殊的None：如果tag为none则认为不会有任何Tag处理
-            //if (buffTagManager != null && bf.BuffTag != BuffTag.none)
-            //{
-            //    for (int i = buffs.Count - 1; i >= 0; i--)
-            //    {
-            //        //首先：如果有已有buff能抵消新buff，则直接抵消
-            //        if (buffs.Any(b => buffTagManager.IsTagRemovedBy(bf.BuffTag, b.BuffTag)))
-            //        {
-            //            bf.OnBuffDestroy();
-            //            return;
-            //        }
-            //        //之后：如果新buff没有被抵消，则新buff抵消已有的buff
-            //        if (buffTagManager.IsTagConflictWith(bf.BuffTag, buffs[i].BuffTag))
-            //        {
-            //            InteruptBuff(buffs[i]);
-            //        }
-            //    }
-            //}
-
             //确定能添加Buff时
             onAddBuff?.Invoke();
             //检查是否已有同样的Buff

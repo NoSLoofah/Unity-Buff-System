@@ -14,18 +14,18 @@ namespace NoSLoofah.BuffSystem.Manager.Editor
         }
         public override void OnInspectorGUI()
         {
-            serializedObject.UpdateIfRequiredOrScript();
+            //serializedObject.UpdateIfRequiredOrScript();
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(data);
-            if (GUILayout.Button(new GUIContent("New")))
-            {
+            //EditorGUILayout.BeginHorizontal();
+            //EditorGUILayout.PropertyField(data);
+            //if (GUILayout.Button(new GUIContent("New")))
+            //{
 
-                AssetDatabase.CreateAsset(CreateInstance<BitBuffTagData>(), EditorUtility.SaveFilePanelInProject("保存新BitBuffTag数据", "NewBitBuffData", "asset", "输入文件名"));
-            }
-            EditorGUILayout.EndHorizontal();
+            //    AssetDatabase.CreateAsset(CreateInstance<BitBuffTagData>(), EditorUtility.SaveFilePanelInProject("保存新BitBuffTag数据", "NewBitBuffData", "asset", "输入文件名"));
+            //}
+            //EditorGUILayout.EndHorizontal();
 
-            serializedObject.ApplyModifiedProperties();
+            //serializedObject.ApplyModifiedProperties();
         }
     }
 }

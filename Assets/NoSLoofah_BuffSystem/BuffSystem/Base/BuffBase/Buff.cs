@@ -71,7 +71,6 @@ namespace NoSLoofah.BuffSystem
             Layer = 0;
             ModifyLayer(1);
             firstFrame = true;
-            Debug.Log(Layer);
         }
         public abstract void OnBuffRemove();
 
@@ -80,7 +79,6 @@ namespace NoSLoofah.BuffSystem
             if (mutilAddType == BuffMutilAddType.multipleLayer || mutilAddType == BuffMutilAddType.multipleLayerAndResetTime)
             {
                 ModifyLayer(-Layer);
-                isEffective = false;
             }
             RealModifyLayer();
         }
@@ -145,6 +143,7 @@ namespace NoSLoofah.BuffSystem
                     timer = duration;
                     ModifyLayer(-1);
                 }
+                else isEffective = false;
             }
             RealModifyLayer();
             if (!runTickTimer) return;

@@ -155,6 +155,7 @@ namespace NoSLoofah.BuffSystem.Editor
             string dir = Path.Combine(SO_PATH, defaultTagSOName);
             if (File.Exists(dir)) return;
             BitBuffTagData b = CreateInstance<BitBuffTagData>();
+            b.Initialize();
             AssetDatabase.CreateAsset(b, dir);
         }
         /// <summary>

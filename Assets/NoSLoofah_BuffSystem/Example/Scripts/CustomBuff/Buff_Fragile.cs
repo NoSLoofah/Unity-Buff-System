@@ -14,18 +14,18 @@ public class Buff_Fragile : Buff
     }
 
     public override void OnBuffModifyLayer(int change)
-    {        
+    {
         targetEntity.ModifyDamageMultiplier(hurtIncreaseRate * change);
     }
 
     public override void OnBuffRemove()
     {
-        
+        Debug.Log("OnRemove");
     }
 
     public override void OnBuffStart()
     {
-        targetEntity = Target.GetComponent<Entity1>();        
+        targetEntity = Target.GetComponent<Entity1>();
     }
 
     public override void Reset()

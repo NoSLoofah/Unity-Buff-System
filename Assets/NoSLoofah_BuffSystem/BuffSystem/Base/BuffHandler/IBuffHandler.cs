@@ -21,7 +21,7 @@ namespace NoSLoofah.BuffSystem
         /// <param name="removeAll">如果对象同时存在多个同id的buff，是否将所有一并移除</param>
         public void RemoveBuff(int buffId, bool removeAll = true);
         /// <summary>
-        /// 移除Buff（不执行OnBuffDestroy）
+        /// 移除Buff（不执行OnBuffRemove）
         /// </summary>
         /// <param name="buffId">要移除的Buff id</param>
         /// <param name="removeAll">如果对象同时存在多个同id的buff，是否将所有一并移除</param>

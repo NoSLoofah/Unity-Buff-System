@@ -92,22 +92,24 @@ namespace NoSLoofah.BuffSystem
             }
         }
         /// <summary>
-        /// 移除一个Buff，移除后执行OnBuffDestroy
+        /// 移除一个Buff，移除后执行OnBuffRemove
         /// </summary>
         /// <param name="buff">要移除的Buff</param>
         private void RemoveBuff(IBuff buff)
         {
-            InteruptBuff(buff);
-            forOnBuffDestroy += ((Buff)buff).OnBuffDestroy;
+            Buff bf = (Buff)buff;
+            bf.SetEffective(false);
         }
         /// <summary>
-        /// 移除一个Buff，移除后不执行OnBuffDestroy
+        /// 移除一个Buff，移除后不执行OnBuffRemove
         /// </summary>
         /// <param name="buff">要移除的Buff</param>
         private void InteruptBuff(IBuff buff)
         {
             Buff bf = (Buff)buff;
             bf.SetEffective(false);
+            buffs.Remove(bf);
+            forOnBuffDestroy += ((Buff)buff).OnBuffDestroy;
         }
         #endregion
         public void AddBuff(int buffId, GameObject caster)
@@ -151,7 +153,7 @@ namespace NoSLoofah.BuffSystem
                     InteruptBuff(bf);
                 }
             }
-            InteruptBuff(b);
+            else InteruptBuff(b);
         }
 
         private bool updated = false;
@@ -170,6 +172,7 @@ namespace NoSLoofah.BuffSystem
         {
             updated = false;
             Buff bf;
+            bool buffRemoved = false;
             for (int i = buffs.Count - 1; i >= 0; i--)
             {
                 bf = buffs[i];
@@ -178,11 +181,12 @@ namespace NoSLoofah.BuffSystem
                 if (!bf.IsEffective)
                 {
                     bf.OnBuffRemove();
-                    onRemoveBuff?.Invoke();
+                    buffRemoved = true;
                     buffs.Remove(bf);
                     forOnBuffDestroy += bf.OnBuffDestroy;
                 }
             }
+            if (buffRemoved) onRemoveBuff?.Invoke();
         }
     }
 }

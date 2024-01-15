@@ -19,6 +19,6 @@ MonoBehaviour:
   buffTag: 1
   id: 0
   isPermanent: 0
-  duration: 15
-  bleedDamage: 2
+  duration: 10
+  bleedDamage: 5
   bleedTimeInterval: 1

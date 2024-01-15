@@ -11,13 +11,18 @@ namespace NoSLoofah.BuffSystem
     /// </summary>
     public class BitBuffTagManager : BuffTagManager
     {
-        private static string dataPath => Manager.BuffManager.SO_PATH + "/BuffTagData.asset";
+        //TODO:
+        //Manager.BuffManager.SO_PATH + 
+        //private static string dataPath => "/BuffTagData.asset";
 
-        private BitBuffTagData tagData;
+        [HideInInspector][SerializeField] private BitBuffTagData tagData;
+        public void SetData(BitBuffTagData data)
+        {
+            tagData = data;
+        }
         private void Awake()
         {
-            tagData = AssetDatabase.LoadAssetAtPath<BitBuffTagData>(dataPath);
-            if (tagData == null) Debug.LogError(dataPath + "：Tag数据丢失");
+            if (tagData == null) Debug.LogError("Tag数据丢失");
         }
         public override bool IsTagRemoveOther(BuffTag tag, BuffTag other)
         {
@@ -28,7 +33,7 @@ namespace NoSLoofah.BuffSystem
         }
 
         public override bool IsTagCanAddWhenHaveOther(BuffTag tag, BuffTag other)
-        {            
+        {
             if (tag == 0) return false;
             if (tag < 0) throw new System.Exception("使用了负标签");
             int index = BitBuffTagData.GetIndex(tag);

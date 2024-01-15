@@ -12,33 +12,20 @@ namespace NoSLoofah.BuffSystem.Manager
     public class BuffManager : MonoSingleton<BuffManager>, IBuffManager
     {
         //public static readonly string SO_PATH = "Assets/NoSLoofah_BuffSystem/BuffSystem/Data/BuffData";    //保存Data的路径
-        public static string SO_PATH
-        {
-            get
-            {
-                var l = AssetDatabase.FindAssets("BuffMgr t:Prefab");
-                if (l.Length <= 0) throw new Exception("BuffMgr.prefab丢失,请重新导入BuffSystem");
-                else if (l.Length > 1) Debug.LogError("请保证项目中只有一个BuffMgr.prefab");
-                var path = AssetDatabase.GUIDToAssetPath(l[0]).Replace("Base/BuffMgr.prefab", "Data/BuffData");
-                return path;
-            }
-        }//保存Data的路径
-        private BuffCollection collection;
+        [HideInInspector][SerializeField] private BuffCollection collection;
         private IBuffTagManager tagManager;
         public bool IsWorking => collection != null;
 
         public IBuffTagManager TagManager => tagManager;
+        public void SetData(BuffCollection buffCollection)
+        {
+            this.collection = buffCollection;
+        }
 
         protected override void Awake()
         {
             base.Awake();
-            collection = null;
-            string[] assetPaths = AssetDatabase.FindAssets("t:BuffCollection", new string[] { SO_PATH });
-            if (assetPaths.Length > 0)
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath(assetPaths[0]);
-                collection = AssetDatabase.LoadAssetAtPath<BuffCollection>(assetPath);
-            }
+            if (collection == null) Debug.LogError("BuffCollection数据丢失");
         }
         public IBuff GetBuff(int id)
         {

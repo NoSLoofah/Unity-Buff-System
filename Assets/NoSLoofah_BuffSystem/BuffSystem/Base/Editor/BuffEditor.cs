@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Reflection;
+using NoSLoofah.BuffSystem.Manager;
 
 namespace NoSLoofah.BuffSystem.Editor
 {
@@ -18,6 +19,18 @@ namespace NoSLoofah.BuffSystem.Editor
             wd.Initialize();
         }
 
+        public static string SO_PATH
+        {
+            get
+            {
+                var l = AssetDatabase.FindAssets("BuffMgr t:Prefab");
+                if (l.Length <= 0) throw new Exception("BuffMgr.prefab丢失,请重新导入BuffSystem");
+                else if (l.Length > 1) Debug.LogError("请保证项目中只有一个BuffMgr.prefab");
+                var path = AssetDatabase.GUIDToAssetPath(l[0]).Replace("Base/BuffMgr.prefab", "Data/BuffData");
+                return path;
+            }
+        }//保存Data的路径
+
 
         //左侧列表
         private const float WIDTH_DIVISON = 0.3f;           //左栏比例
@@ -29,10 +42,13 @@ namespace NoSLoofah.BuffSystem.Editor
         private SerializedObject currentBuffSO;
         private SerializedProperty currentBuffSP;
         //文件保存
+        private static readonly string assetBundleName = "Buff";
         public static readonly string defaultSOName = "BuffCollection.asset";
         public static readonly string defaultTagSOName = "BuffTagData.asset";
         private int maxLengthBuffer;
-        public static string SO_PATH => Manager.BuffManager.SO_PATH;
+        private GameObject mgr = null;
+        private BitBuffTagData tagData = null;
+
         public static string BUFF_PATH => SO_PATH + "/Buffs";
 
         //语言
@@ -67,6 +83,18 @@ namespace NoSLoofah.BuffSystem.Editor
             Initialize();
         }
         #region 更新方法
+        private void UpdateBuffMgr()
+        {
+            var l = AssetDatabase.FindAssets("BuffMgr t:Prefab");
+            if (l.Length <= 0) throw new Exception("BuffMgr.prefab丢失,请重新导入BuffSystem");
+            else if (l.Length > 1) Debug.LogError("请保证项目中只有一个BuffMgr.prefab");
+            string assetPath = AssetDatabase.GUIDToAssetPath(l[0]);
+            mgr = PrefabUtility.LoadPrefabContents(assetPath);
+            mgr.GetComponent<BitBuffTagManager>().SetData(tagData);
+            mgr.GetComponent<BuffManager>().SetData(SO);
+            PrefabUtility.SaveAsPrefabAsset(mgr, assetPath);
+            PrefabUtility.UnloadPrefabContents(mgr);
+        }
         private void Initialize()
         {
             assembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name.Equals(ASSEMBLY_NAME));
@@ -74,6 +102,7 @@ namespace NoSLoofah.BuffSystem.Editor
             UpdateLeftList();
             GenerateReadme();
             CreateBuffTagAsset();
+            UpdateBuffMgr();
         }
         private void GenerateReadme()
         {
@@ -112,7 +141,9 @@ namespace NoSLoofah.BuffSystem.Editor
                 Debug.Log("没有数据");//待处理，或许可以直接创建一个新的
                 if (!Directory.Exists(SO_PATH)) Directory.CreateDirectory(SO_PATH);
                 SO = CreateInstance<BuffCollection>();
-                AssetDatabase.CreateAsset(SO, Path.Combine(SO_PATH, defaultSOName));
+                var path = Path.Combine(SO_PATH, defaultSOName);
+                AssetDatabase.CreateAsset(SO, path);
+                UpdateBuffMgr();
             }
             else
             {
@@ -149,14 +180,21 @@ namespace NoSLoofah.BuffSystem.Editor
 
             Buff b = SO.buffList[index];
             AssetDatabase.CreateAsset(b, dir);
+
         }
         private void CreateBuffTagAsset()
         {
             string dir = Path.Combine(SO_PATH, defaultTagSOName);
-            if (File.Exists(dir)) return;
+            if (File.Exists(dir))
+            {
+                tagData = AssetDatabase.LoadAssetAtPath<BitBuffTagData>(dir);
+                return;
+            }
             BitBuffTagData b = CreateInstance<BitBuffTagData>();
             b.Initialize();
             AssetDatabase.CreateAsset(b, dir);
+            tagData = b;
+            UpdateBuffMgr();
         }
         /// <summary>
         /// 绘制分界线

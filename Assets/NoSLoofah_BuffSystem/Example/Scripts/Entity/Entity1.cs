@@ -22,7 +22,7 @@ public class Entity1 : MonoBehaviour
     }
     public void ModifyHealth(int changeValue)
     {
-        health += changeValue;
+        health += (int)(changeValue * (changeValue < 0 ? damageMultiplier : 1));
         health = Math.Clamp(health, 0, maxHealth);
     }
     public void ModifyDamageMultiplier(float changeValue)

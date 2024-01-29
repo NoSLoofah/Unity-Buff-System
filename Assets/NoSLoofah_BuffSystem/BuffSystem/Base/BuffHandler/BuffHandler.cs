@@ -137,7 +137,7 @@ namespace NoSLoofah.BuffSystem
             else RemoveBuff(b);
         }
 
-        public void InteruptBuff(int buffId, bool removeAll = true)
+        public void InterruptBuff(int buffId, bool removeAll = true)
         {
             var b = buffs.FirstOrDefault(b => b.ID == buffId);
             if (b == null)

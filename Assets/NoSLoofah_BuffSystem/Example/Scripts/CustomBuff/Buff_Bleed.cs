@@ -18,7 +18,7 @@ public class Buff_Bleed : Buff
 
     public override void OnBuffRemove()
     {
-        
+
     }
 
     public override void OnBuffStart()
@@ -33,7 +33,7 @@ public class Buff_Bleed : Buff
     }
 
     protected override void OnBuffTickEffect()
-    {
+    {        
         targetEntity.ModifyHealth(-Layer * bleedDamage);
     }
 

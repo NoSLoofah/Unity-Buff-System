@@ -135,22 +135,30 @@ namespace NoSLoofah.BuffSystem
                 return;
             }
             if (!IsEffective) return;
-            if (!isPermanent) timer -= Time.deltaTime;
-            if (!isPermanent && timer <= 0)
+            if (!isPermanent)
             {
-                if (removeOneLayerOnTimeUp)
+                timer -= Time.deltaTime;
+                while (timer <= 0 && isEffective)
                 {
-                    timer = duration;
-                    ModifyLayer(-1);
+                    if (removeOneLayerOnTimeUp)
+                    {
+                        timer += duration;
+                        ModifyLayer(-1);
+                    }
+                    else
+                    {
+                        isEffective = false;
+                        timer = 0;
+                    }
+
                 }
-                else isEffective = false;
             }
             RealModifyLayer();
             if (!runTickTimer) return;
             tickTimer -= Time.deltaTime;
-            if (tickTimer <= 0)
+            while (tickTimer <= 0)
             {
-                tickTimer = tickInterval;
+                tickTimer += tickInterval;
                 OnBuffTickEffect();
             }
         }
@@ -164,7 +172,7 @@ namespace NoSLoofah.BuffSystem
         private void RealModifyLayer()
         {
             Layer += tmpLayer;
-            if (layerModified) OnBuffModifyLayer(tmpLayer);
+            if (layerModified) OnBuffModifyLayer(Layer < 0 ? -Layer : tmpLayer);
             if (Layer <= 0) isEffective = false;
             tmpLayer = 0;
             layerModified = false;

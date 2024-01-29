@@ -25,7 +25,7 @@ namespace NoSLoofah.BuffSystem
         /// </summary>
         /// <param name="buffId">要移除的Buff id</param>
         /// <param name="removeAll">如果对象同时存在多个同id的buff，是否将所有一并移除</param>
-        public void InteruptBuff(int buffId, bool interuptAll = true);
+        public void InterruptBuff(int buffId, bool interuptAll = true);
         /// <summary>
         /// 注册事件：添加Buff时
         /// </summary>

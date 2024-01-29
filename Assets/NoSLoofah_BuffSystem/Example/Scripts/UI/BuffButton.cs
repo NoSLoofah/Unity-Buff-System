@@ -25,6 +25,6 @@ public class BuffButton : MonoBehaviour
     {
         int i;
         if (!int.TryParse(inputField.text, out i)) return;
-        buffHandler.InteruptBuff(i);
+        buffHandler.InterruptBuff(i);
     }
 }

@@ -247,7 +247,7 @@ namespace NoSLoofah.BuffSystem.Editor
                     }
                     else
                     {
-                        string t = SO.buffList[i].GetType().ToString();
+                        string t = SO.buffList[i].GetType().Name;
                         index = Array.IndexOf(subClassNames, t);
                         index = index < 0 ? 0 : index;
                         currentBuffSO = new SerializedObject(SO.buffList[i]);

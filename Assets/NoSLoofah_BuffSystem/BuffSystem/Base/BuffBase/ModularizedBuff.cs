@@ -5,7 +5,7 @@ namespace NoSLoofah.BuffSystem
 {
     public class ModularizedBuff : Buff
     {
-        [SerializeField] private float tick;
+        [SerializeField] private float tick;        
         [SerializeField] private List<BuffEffect> onStartEffects;
         [SerializeField] private List<BuffEffect> onRemoveEffects;
         [SerializeField] private List<BuffEffect> onTickEffects;

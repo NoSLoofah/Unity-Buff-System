@@ -6,6 +6,7 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using NoSLoofah.BuffSystem.Manager;
+using System.Reflection.Emit;
 
 namespace NoSLoofah.BuffSystem.Editor
 {
@@ -352,7 +353,15 @@ namespace NoSLoofah.BuffSystem.Editor
                         if (p) currentBuffSP.NextVisible(true);
                     }
                     else
+                    {
                         EditorGUILayout.PropertyField(currentBuffSP, true);
+                        if (currentBuffSP.isArray)
+                        {
+                            currentBuffSP.NextVisible(true);
+                            int size = currentBuffSP.intValue;
+                            for (int i = 0; i < size; i++) currentBuffSP.NextVisible(true);
+                        }
+                    }
                 }
                 if (GUI.changed)
                 {

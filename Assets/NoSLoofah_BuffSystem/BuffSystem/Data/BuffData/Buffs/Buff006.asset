@@ -13,16 +13,19 @@ MonoBehaviour:
   m_Name: Buff006
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  buffName: 
-  mutilAddType: 0
-  removeOneLayerOnTimeUp: 0
+  buffName: "\u6A21\u5757\u5316\u6D4B\u8BD5"
+  mutilAddType: 1
+  removeOneLayerOnTimeUp: 1
   buffTag: 0
   id: 6
   isPermanent: 0
-  duration: 0
-  tick: 0
+  duration: 10
+  tick: 2
   onStartEffects:
-  - {fileID: 0}
-  onRemoveEffects: []
-  onTickEffects: []
-  onModifyLayerEffects: []
+  - {fileID: 11400000, guid: 0d03cadc8f3cc984c8a29846e1fbd8ca, type: 2}
+  onRemoveEffects:
+  - {fileID: 11400000, guid: 4105875b92076794b9193b29008db221, type: 2}
+  onTickEffects:
+  - {fileID: 11400000, guid: b49e118c814e23e4ab75af46969f2311, type: 2}
+  onModifyLayerEffects:
+  - {fileID: 11400000, guid: bc7469c9fb067b942a76db13cd442ece, type: 2}

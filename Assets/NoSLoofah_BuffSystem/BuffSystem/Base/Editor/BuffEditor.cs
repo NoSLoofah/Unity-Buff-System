@@ -11,12 +11,55 @@ namespace NoSLoofah.BuffSystem.Editor
 {
     public class BuffEditor : EditorWindow
     {
+        private bool initialized = false;
+        private bool isDestroyed = false;
+        private EditorApplication.CallbackFunction delayedInitializeAction;
+        
         [MenuItem("Tools/BuffEditor")]
         public static void OpenWindow()
         {
             BuffEditor wd = GetWindow<BuffEditor>();       //唤出窗口        
             wd.titleContent = new GUIContent("Buff编辑器"); //添加标题
-            wd.Initialize();
+            wd.DelayedInitialize();
+        }
+        private void OnEnable()
+        {
+            initialized = false;
+            isDestroyed = false;
+            delayedInitializeAction = DelayedInitialize;
+            EditorApplication.delayCall += delayedInitializeAction;
+        }
+        private void OnDestroy()
+        {
+            isDestroyed = true;
+            if (delayedInitializeAction != null)
+            {
+                EditorApplication.delayCall -= delayedInitializeAction;
+            }
+        }
+
+        private void DelayedInitialize()
+        {
+            // 检测窗口是否已被销毁
+            if (isDestroyed || initialized) 
+                return;
+
+            try
+            {
+                // 原Initialize()中的逻辑
+                assembly = AppDomain.CurrentDomain.GetAssemblies()
+                    .First(a => a.GetName().Name.Equals(ASSEMBLY_NAME));
+                UpdateSubClass();
+                UpdateLeftList();
+                GenerateReadme();
+                CreateBuffTagAsset();
+                UpdateBuffMgr();
+                initialized = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("BuffEditor初始化失败: " + e.Message);
+            }
         }
 
         public static string SO_PATH
@@ -77,11 +120,6 @@ namespace NoSLoofah.BuffSystem.Editor
         //bool useClassNamePrefix;    //使用类名作为前缀
         //bool keepInput;             //创建后保留输入
         //bool useIndexName;          //使用序号命名
-
-        private void OnEnable()
-        {
-            Initialize();
-        }
         #region 更新方法
         private void UpdateBuffMgr()
         {
@@ -215,6 +253,11 @@ namespace NoSLoofah.BuffSystem.Editor
 
         private void OnGUI()
         {
+            if (!initialized || SO == null)
+            {
+                GUILayout.Label("Initializing Buff Editor...");
+                return;
+            }
             //左侧
             float leftWidth = position.width * WIDTH_DIVISON;
 
